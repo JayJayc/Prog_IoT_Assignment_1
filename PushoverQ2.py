@@ -1,5 +1,6 @@
 import httplib
 import urllib
+import time
 from sense_hat import SenseHat
 
 class PushoverSender:
@@ -14,15 +15,21 @@ class PushoverSender:
                      urllib.urlencode(post_data), {"Content-type": "application/x-www-form-urlencoded"})
         # print(conn.getresponse().read())
 
-sense = SenseHat()
-temp = None
-if(sense):
-    temp = sense.get_temperature()
-else:
-    temp = 20
-print(int(temp))
-message = "Temperature is: "+str(int(temp))
-
 
 m = PushoverSender("u3rxb16wvd6a65afq3ncdfyopt35id","apj8741z2fgjv1gtu9seybng46ybcg")
-m.send_notification(message)
+sense = SenseHat()
+temp = None
+
+
+while (temp > 20 or temp == None):
+    if(sense):
+        temp = sense.get_temperature()
+        print("Temp is "+int(temp))
+        time.sleep(10)
+
+
+message = "Temperature is below 20, don't forget to bring a sweater (Temp: "+str(int(temp))+")"
+
+if (temp > 20):
+    m.send_notification(message)
+    time.sleep(60)
