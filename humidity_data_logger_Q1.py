@@ -12,6 +12,7 @@ def getSenseHatData():
         temp = round(temp, 1)
         logData (temp)
 
+
 # log sensor data on database
 def logData (temp):	
     conn=sqlite3.connect(dbname)
@@ -20,20 +21,10 @@ def logData (temp):
     conn.commit()
     conn.close()
 
+
 # main function
 def main():
-    for i in range (0,3):
-        getSenseHatData()
-        time.sleep(sampleFreq)
-    displayData()
-
-
-def index():
-    time = getTime
-    templateData = {
-        'time' = time  
-    }
-    return render_template('index.html', **templateData)
+    getSenseHatData()
 
 
 # Execute program 
