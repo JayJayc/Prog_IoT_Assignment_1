@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import os
-from datetime import datetime
-from flask import Flask, render_template, request
+import sys
 import sqlite3
+from flask import Flask, render_template, request
+
 dbname='data_logger.db'
 
 app = Flask(__name__)
@@ -13,19 +14,41 @@ app = Flask(__name__)
 #log.setLevel(logging.ERROR)
 
 def getData():
-    time = datetime.now().strftime("%H:%M:%S")
-    sense = SenseHat()
-    temp = round(sense.get_temperature(), 1)
-    return time, temp
+	conn = sqlite3.connect(dbname)
+	curs = conn.cursor()
+
+	temps = []
+	times = []
+	hums = []
+	data = []
+
+	curs.execute("SELECT * FROM SENSEHAT_data")
+	rows = curs.fetchall()
+
+	for row in rows:
+		times.append(row[0])
+		temps.append(row[1])
+		hums.append(row[2])
+	conn.close()
+
+	data.append(times)
+	data.append(temps)
+	data.append(hums)
+	return data
 
 # main route 
 @app.route("/")
 def index():	
-	time, temp = getData()
+	data = getData()
+	times = data[0]
+	temps = data[1]
+	hums = data[2]
 	templateData = {
-		'time': time,
-		'temp': temp
+		'times': times,
+		'temps': temps,
+		'hums': hums
 	}
+
 	return render_template('index.html', **templateData)
 
 if __name__ == "__main__":
