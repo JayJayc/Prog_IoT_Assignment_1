@@ -27,5 +27,14 @@ def main():
         time.sleep(sampleFreq)
     displayData()
 
+
+def index():
+    time = getTime
+    templateData = {
+        'time' = time  
+    }
+    return render_template('index.html', **templateData)
+
+
 # Execute program 
 main()
