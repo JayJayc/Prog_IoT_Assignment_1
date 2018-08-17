@@ -1,13 +1,65 @@
 <!DOCTYPE html>
-   <head>
-      <title>Sensor data </title>
-   </head>
-   <body>
-	<h1>Sensor Data </h1>
-    <!-- <h3> The temperature at {{ time }} is {{ temp }}°C</h3> -->
-    {{temps[1]}}
-    {{temps[0]}}
-    {{times}}
-    {{hums}}
-   </body>
+<html lang="en">
+    <head>   
+        <meta charset="utf-8" />   
+        <title>Index.html </title>      
+        <!-- import plugin script -->   
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>   
+    </head>
+    <body>
+        <!-- bar chart canvas element -->
+        <canvas id="chart" width="600" height="400"></canvas>
+        
+        <script>
+            // bar chart data
+            var barData = {
+                labels : [{% for item in times %}
+                        "{{item}}",
+                        {% endfor %}],
+
+                datasets : [{
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    data : [{% for item in temps %}
+                        {{item}},
+                        {% endfor %}]
+                }]
+            }
+
+           // Finding the top and bottom of the Y-axes
+            Array.min = function( array ){
+                return Math.min.apply( Math, array );
+            };
+            Array.max = function( array ){
+                return Math.max.apply( Math, array );
+            };
+
+            // Setting the chart to only show relevant info
+            var Y_min = (Array.min({{temps}})) -3;
+            var Y_max = (Array.max({{temps}})) +3;
+            var options = {
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            suggestedMin: Y_min,
+                            suggestedMax: Y_max
+                        }
+                    }]
+                }
+            };
+
+           // get bar chart canvas
+           var mychart = document.getElementById("chart").getContext("2d");
+         
+           // draw bar chart
+           var myBarChart = new Chart(mychart, {
+                type: 'bar',
+                data: barData,
+                options : options
+            });
+         
+        </script>
+    </body>
 </html>
