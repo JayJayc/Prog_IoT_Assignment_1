@@ -8,11 +8,23 @@
     </head>
     <body>
         <!-- bar chart canvas element -->
-        <canvas id="chart" width="600" height="400"></canvas>
+        <canvas id="temp_chart" width="600" height="400"></canvas>
+
+        <!-- bar chart canvas element -->
+        <canvas id="hum_chart" width="600" height="400"></canvas>
         
         <script>
-            // bar chart data
-            var barData = {
+            // Finding the top and bottom of the Y-axes
+            Array.min = function( array ){
+                return Math.min.apply( Math, array );
+            };
+            Array.max = function( array ){
+                return Math.max.apply( Math, array );
+            };
+
+
+            // bar chart for temp data
+            var tempBarData = {
                 labels : [{% for item in times %}
                         "{{item}}",
                         {% endfor %}],
@@ -27,37 +39,71 @@
                 }]
             }
 
-           // Finding the top and bottom of the Y-axes
-            Array.min = function( array ){
-                return Math.min.apply( Math, array );
-            };
-            Array.max = function( array ){
-                return Math.max.apply( Math, array );
-            };
+            // bar chart humidity data
+            var humBarData = {
+                labels : [{% for item in times %}
+                        "{{item}}",
+                        {% endfor %}],
 
-            // Setting the chart to only show relevant info
-            var Y_min = (Array.min({{temps}})) -3;
-            var Y_max = (Array.max({{temps}})) +3;
-            var options = {
+                datasets : [{
+                    fillColor: "rgba(151,187,205,0.2)",
+                    strokeColor: "rgba(151,187,205,1)",
+                    pointColor: "rgba(151,187,205,1)",
+                    data : [{% for item in hums %}
+                        {{item}},
+                        {% endfor %}]
+                }]
+            }
+
+           
+            // Setting the temp chart to only show relevant info
+            var Y_min_temp = (Array.min({{temps}})) -3;
+            var Y_max_temp = (Array.max({{temps}})) +3;
+            var options_temp = {
                 scales: {
                     yAxes: [{
                         display: true,
                         ticks: {
-                            suggestedMin: Y_min,
-                            suggestedMax: Y_max
+                            suggestedMin: Y_min_temp,
+                            suggestedMax: Y_max_temp
                         }
                     }]
                 }
             };
 
-           // get bar chart canvas
-           var mychart = document.getElementById("chart").getContext("2d");
-         
-           // draw bar chart
-           var myBarChart = new Chart(mychart, {
+            // Setting the hum chart to only show relevant info
+            var Y_min_hum = (Array.min({{hums}})) -3;
+            var Y_max_hum = (Array.max({{hums}})) +3;
+            var options_hum = {
+                scales: {
+                    yAxes: [{
+                        display: true,
+                        ticks: {
+                            suggestedMin: Y_min_hum,
+                            suggestedMax: Y_max_hum
+                        }
+                    }]
+                }
+            };
+
+            // get temp bar chart canvas
+            var temp_chart = document.getElementById("temp_chart").getContext("2d");
+            
+            // get humidity bar chart canvas
+            var hum_chart = document.getElementById("hum_chart").getContext("2d");
+            
+            // draw temp bar chart
+            var myTempBarChart = new Chart(temp_chart, {
                 type: 'bar',
-                data: barData,
-                options : options
+                data: tempBarData,
+                options : options_temp
+            });
+
+            // draw temp bar chart
+            var myHumBarChart = new Chart(hum_chart, {
+                type: 'bar',
+                data: humBarData,
+                options : options_hum
             });
          
         </script>
