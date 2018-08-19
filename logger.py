@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 import time
+from datetime import datetime
 import sqlite3
 from sense_hat import SenseHat
 
@@ -21,7 +23,7 @@ def getSenseHatData():
 def logData(data):	
     conn=sqlite3.connect(dbname)
     curs=conn.cursor()
-    curs.execute("INSERT INTO SENSEHAT_data values(datetime('now'), (?), (?))", (data[0],data[1],))
+    curs.execute("INSERT INTO SENSEHAT_data values(datetime(?), (?), (?))", (datetime.now(),data[0],data[1],))
     conn.commit()
     conn.close()
 

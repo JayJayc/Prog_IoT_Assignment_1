@@ -68,7 +68,7 @@ function changeOverTimeData(data_array){
         // if its a decrease
         if (data_array[i-1] > data_array[i]){
             let decrease = data_array[i-1] - data_array[i];
-            var change = decrease/data_array[i-1]*100;
+            var change = ((decrease/data_array[i-1])-100)*100;
         }
         // if its an increase
         if (data_array[i-1] < data_array[i]){
@@ -100,7 +100,9 @@ function chartChange(humChartData, tempChartData){
         options: {
         title: {
             display: true,
-        }
+        },
+        responsive:false,
+        maintainAspectRatio: false
         }
     });
 }
