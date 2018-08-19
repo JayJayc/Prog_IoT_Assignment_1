@@ -63,27 +63,30 @@ function drawBarChart(element_name, chartData, options){
 }
 
 function changeOverTimeData(data_array){
-    changeData = []
+    var changeData = [];
+    alert(data_array);
     for (i = 1; i < data_array.length; i++){
+        alert(changeData);
         // if its a decrease
         if (data_array[i-1] > data_array[i]){
             let decrease = data_array[i-1] - data_array[i];
-            var change = ((decrease/data_array[i-1])-100)*100;
+            var change = -Math.abs((decrease/data_array[i-1])*100);
         }
         // if its an increase
         if (data_array[i-1] < data_array[i]){
             let increase = data_array[i] - data_array[i-1];
-            var change = increase/data_array[i-1]*100;
+            var change = ((increase/data_array[i-1])*100);
         }
-        changeData[i-1] = change;
+        changeData.push(change);
     }
     return changeData;
 }
 
-function chartChange(humChartData, tempChartData){
+function chartChange(humChartData, tempChartData, timeData){
     new Chart(document.getElementById("change_chart"), {
         type: 'line',
         data: {
+        labels: timeData,
         datasets: [{ 
             data:  tempChartData,
             label: "Temperature Change",

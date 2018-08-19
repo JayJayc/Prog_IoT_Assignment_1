@@ -25,6 +25,7 @@
         <script src="{{ url_for('static', filename='js/javascript.js') }}"></script>
         <script>
             // bar chart for temp data
+            
             var tempBarData = {
                 labels : [{% for item in times %}
                         "{{item}}",
@@ -69,7 +70,10 @@
             drawBarChart("temp_chart", tempBarData, temp_options);
             var hum_change = changeOverTimeData({{hums}});
             var temp_change = changeOverTimeData({{temps}});
-            chartChange(hum_change,temp_change);
+            var timeData = [{% for item in times %}
+                        "{{item}}",
+                        {% endfor %}];
+            chartChange(hum_change,temp_change, timeData);
         </script>
         
     </body>

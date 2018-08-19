@@ -24,7 +24,6 @@ def getName():
     curs.execute("SELECT name FROM NAMES")
     rows = curs.fetchall()
     for row in rows:
-        print(row)
         names.append(row[0])
     conn.close()
     print(names)
@@ -64,8 +63,8 @@ def main():
     temp = getSenseHatData()
     if name is not None:
         sense.show_message(
-            "Hi {}! Current Temp is {}*c".format(name, temp),
-            scroll_speed=0.05
+            "Hi {}! Current Temp is {} C".format(name, temp),
+            scroll_speed=0.15
             )
 
 

@@ -4,7 +4,7 @@ import sys
 import sqlite3
 from flask import Flask, render_template, request
 
-dbname='data_logger.db'
+dbname='/home/pi/IoT/Assignment1/data_logger.db'
 
 app = Flask(__name__)
 

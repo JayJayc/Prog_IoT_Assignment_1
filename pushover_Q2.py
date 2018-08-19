@@ -10,7 +10,7 @@ class PushoverSender:
         self.api_key = api_key
 
     def send_notification(self, text):
-        conn = httplib.HTTPSConnection(
+        conn = http.client.HTTPSConnection(
             "api.pushover.net:443"
             )
         post_data = {
@@ -36,7 +36,7 @@ def tempCheck():
             temp = sense.get_temperature()
             try:
                 print("Temp is "+str(int(temp)))
-                if float(temp) < 20:
+                if float(temp) < 40:
                     return temp
             except ValueError:
                 print('Non-numeric data found in the file.')
