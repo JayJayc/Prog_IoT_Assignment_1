@@ -11,13 +11,13 @@ Pull the project using https://github.com/JayJayc/Prog_IoT_Assignment_1.git
 Using a SFTP service import the code into raspberry enviroment
 
 Run the following files with python3:
-create_db.py
-create_name_db.py
-cron.py
-------------
+* create_db.py
+* create_name_db.py
+* cron.py
+
 example:
 python3 create_db.py
-------------
+
 
 Run save_name.py to register the phone with the raspberry pi
 
@@ -26,9 +26,9 @@ Use the command : sudo python3 ~/YourPATH/WebService/webserver.py
 
 ### Prerequisites
 
-Python3
-Raspberry Pi 3 Model B
-Sense hat
+* Python3
+* Raspberry Pi 3 Model B
+* Sense hat
 
 ## Versioning
 
