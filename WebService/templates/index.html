@@ -2,27 +2,25 @@
 <html lang="en">
     <head>   
         <meta charset="utf-8" />   
-        <title>Index.html </title>      
+        <title>Index.html </title>   
         <!-- import plugin script -->   
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>   
     </head>
     <body>
-        <!-- bar chart canvas element -->
-        <canvas id="temp_chart" width="600" height="400"></canvas>
+        <div class="temp_div">
+            <!-- bar chart canvas element -->
+            <canvas id="temp_chart" width="600" height="400"></canvas>
+        </div>
 
-        <!-- bar chart canvas element -->
-        <canvas id="hum_chart" width="600" height="400"></canvas>
-        
+        <div class="humidity_div">
+            <!-- bar chart canvas element -->
+            <canvas id="hum_chart" width="600" height="400"></canvas>
+        </div>
+        <div>
+                <canvas id="change_chart" width="800" height="450"></canvas>
+        </div>
+        <script src="{{ url_for('static', filename='js/javascript.js') }}"></script>
         <script>
-            // Finding the top and bottom of the Y-axes
-            Array.min = function( array ){
-                return Math.min.apply( Math, array );
-            };
-            Array.max = function( array ){
-                return Math.max.apply( Math, array );
-            };
-
-
             // bar chart for temp data
             var tempBarData = {
                 labels : [{% for item in times %}
@@ -55,57 +53,21 @@
                 }]
             }
 
-           
             // Setting the temp chart to only show relevant info
             var Y_min_temp = (Array.min({{temps}})) -3;
             var Y_max_temp = (Array.max({{temps}})) +3;
-            var options_temp = {
-                scales: {
-                    yAxes: [{
-                        display: true,
-                        ticks: {
-                            suggestedMin: Y_min_temp,
-                            suggestedMax: Y_max_temp
-                        }
-                    }]
-                }
-            };
-
             // Setting the hum chart to only show relevant info
             var Y_min_hum = (Array.min({{hums}})) -3;
             var Y_max_hum = (Array.max({{hums}})) +3;
-            var options_hum = {
-                scales: {
-                    yAxes: [{
-                        display: true,
-                        ticks: {
-                            suggestedMin: Y_min_hum,
-                            suggestedMax: Y_max_hum
-                        }
-                    }]
-                }
-            };
 
-            // get temp bar chart canvas
-            var temp_chart = document.getElementById("temp_chart").getContext("2d");
-            
-            // get humidity bar chart canvas
-            var hum_chart = document.getElementById("hum_chart").getContext("2d");
-            
-            // draw temp bar chart
-            var myTempBarChart = new Chart(temp_chart, {
-                type: 'bar',
-                data: tempBarData,
-                options : options_temp
-            });
-
-            // draw temp bar chart
-            var myHumBarChart = new Chart(hum_chart, {
-                type: 'bar',
-                data: humBarData,
-                options : options_hum
-            });
-         
+            var hum_options = getHumOptions(Y_max_hum, Y_min_hum);
+            var temp_options = getTempOptions(Y_max_temp,Y_min_temp);
+            drawBarChart("hum_chart", humBarData, hum_options);
+            drawBarChart("temp_chart", tempBarData, temp_options);
+            var hum_change = changeOverTimeData({{hums}});
+            var temp_change = changeOverTimeData({{temps}});
+            chartChange(hum_change,temp_change);
         </script>
+        
     </body>
 </html>
