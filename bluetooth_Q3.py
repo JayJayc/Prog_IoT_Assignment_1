@@ -11,9 +11,13 @@ dbname = 'names.db'
 def getSenseHatData():
     sense = SenseHat()
     temp = sense.get_temperature()
-    if temp is not None:
+    try:
         temp = round(temp, 1)
         return (temp)
+    except ValueError:
+        print('Non-numeric data found in the file.')
+    except TypeError:
+        print('a type error has occurred')
 
 
 # get names from Database
@@ -40,16 +44,23 @@ def search(device_names):
         # Sleep three seconds
         time.sleep(3)
         nearby_devices = bluetooth.discover_devices()
-        for mac_address in nearby_devices:
-            for i in range(len(device_names)):
-                if device_names[i] == bluetooth.lookup_name(
-                        mac_address,
-                        timeout=5
-                        ):
-                    device_address = mac_address
-                    name = device_names[i]
-                    break
-            break
+        # search for the device
+        try:
+            for mac_address in nearby_devices:
+                for i in range(len(device_names)):
+                    if device_names[i] == bluetooth.lookup_name(
+                            mac_address,
+                            timeout=5
+                            ):
+                        device_address = mac_address
+                        name = device_names[i]
+                        break
+                break
+        except ValueError:
+            print('Non-numeric data found in the file.')
+        except TypeError:
+            print('a type error has occurred')
+
         if device_address is not None:
             return name
         else:

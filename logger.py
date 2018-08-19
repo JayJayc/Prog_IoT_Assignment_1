@@ -11,12 +11,17 @@ def getSenseHatData():
     sense = SenseHat()
     temp = sense.get_temperature()
     hum = sense.get_humidity()
-
-    if temp and hum is not None:
-        temp = round(temp, 1)
-        hum = round(hum, 1)
-        data = [temp, hum]
-        logData(data)
+    try:
+        if temp and hum is not None:
+            temp = round(temp, 1)
+            hum = round(hum, 1)
+            data = [temp, hum]
+            logData(data)
+    except ValueError:
+        print('Non-numeric data found in the file.')
+    except TypeError:
+        print('a type error has occurred') 
+    
 
 
 # log sensor data on database

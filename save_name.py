@@ -11,7 +11,13 @@ def setName(user_name):
     dbname = "names.db"
     conn = sqlite3.connect(dbname)
     curs = conn.cursor()
-    curs.execute(query % (user_name))
+    try:
+        curs.execute(query % (user_name))
+    except ValueError:
+        print('Non-numeric data found in the file.')
+    except TypeError:
+        print('a type error has occurred')
+
     conn.commit()
     conn.close()
 
