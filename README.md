@@ -16,8 +16,9 @@ Run the following files with python3:
 * cron.py
 
 example:
+```
 python3 create_db.py
-
+```
 
 Run save_name.py to register the phone with the raspberry pi
 
